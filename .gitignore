@@ -1,0 +1,68 @@
+# ====================== Python 基础忽略 ======================
+# 编译文件
+__pycache__/
+*.py[cod]
+*$py.class
+# 分布式版本控制冲突文件
+*.rej
+# 临时文件
+.DS_Store  # Mac 系统特有
+Thumbs.db  # Windows 系统特有
+tmp/
+temp/
+
+# ====================== Django 项目忽略 ======================
+# 1. 本地配置文件（避免泄露敏感信息）
+*.local.py  # 如 settings.local.py（本地开发配置）
+*.env       # 环境变量文件（存储 SECRET_KEY、数据库密码等）
+.env.*      # 多环境变量文件（如 .env.dev、.env.prod）
+!*.env.example  # 例外：保留环境变量示例文件（供团队参考格式）
+
+# 2. Django 运行生成的目录/文件
+media/          # 用户上传的媒体文件（如图片、文档）
+staticfiles/    # collectstatic 收集的静态文件（生产环境用）
+static/         # 若项目用 "动态静态文件"（如开发时用 whitenoise），可忽略；否则保留（开发用）
+logs/           # 日志目录（若配置了 logging 输出到本地）
+db.sqlite3      # 默认 SQLite 数据库文件（开发环境用，生产环境通常用 MySQL/PostgreSQL，需忽略）
+db.sqlite3-journal
+
+# 3. Django 测试/调试文件
+.coverage       # 测试覆盖率报告文件
+htmlcov/        # 测试覆盖率 HTML 报告目录
+.pytest_cache/  # pytest 测试缓存
+tests/reports/  # 测试报告目录
+
+# ====================== 虚拟环境忽略 ======================
+# 虚拟环境目录（常见命名，根据项目实际命名调整）
+venv/
+env/
+ENV/
+.venv/
+ENVIRONMENT/
+
+# ====================== 开发工具/IDE 忽略 ======================
+# PyCharm
+.idea/
+.idea/*
+*.iml
+*.iws
+*.ipr
+# VS Code
+.vscode/
+.vscode/*
+!.vscode/settings.json  # 例外：若团队统一 VS Code 配置，可保留 settings.json
+!.vscode/extensions.json
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+# Vim
+*.swp
+*.swo
+
+# ====================== 其他工具忽略 ======================
+# Docker 相关（若用 Docker 开发，可根据需求调整）
+.dockerignore
+docker-compose.override.yml  # 本地 Docker 覆盖配置
+# 部署相关（避免提交部署脚本的临时配置）
+deploy/.vagrant/  # Vagrant 部署缓存
+deploy/ansible/roles/*/files/  # Ansible 角色的本地文件（若有）
