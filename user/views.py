@@ -4,10 +4,29 @@ from django.shortcuts import render
 from django.views import View
 from rest_framework_jwt.settings import api_settings
 
-from user.models import SysUser
+from user.models import SysUser, SysUserSerializer
 
 
+def generate_token(user):
+    jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+    jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+    payload = jwt_payload_handler(user)
+    assert isinstance(payload, object)
+    return jwt_encode_handler(payload)
 # Create your views here.
+class LoginView(View):
+    def post(self, request):
+        username = request.GET.get('username')
+        password = request.GET.get('password')
+        try:
+            user = SysUser.objects.get(username=username, password=password)
+            data = SysUserSerializer(user).data
+            token = generate_token(user)
+        except Exception as e:
+            print(e)
+            return JsonResponse({'code': 500, 'message': '用户名或密码错误'})
+        return JsonResponse({'code': 200, 'message': 'success', 'data': {'token': token, **data }})
+
 class TestView(View):
 
     def get(self, request):
